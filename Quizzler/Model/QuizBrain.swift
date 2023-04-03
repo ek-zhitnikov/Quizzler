@@ -1,18 +1,13 @@
 //
-//  ViewController.swift
+//  QuizBrain.swift
 //  Quizzler
 //
-//  Created by Кужельная Екатерина on 31.03.2023.
+//  Created by Кужельная Екатерина on 03.04.2023.
 //
 
-import UIKit
+import Foundation
 
-class ViewController: UIViewController {
-
-    @IBOutlet weak var questionLabel: UILabel!
-    @IBOutlet weak var trueButton: UIButton!
-    @IBOutlet weak var falseButton: UIButton!
-    @IBOutlet weak var progressBar: UIProgressView!
+struct QuizBrain {
     
     let quiz = [
         Question(q: "A slug's blood is green.", a: "True"),
@@ -31,37 +26,11 @@ class ViewController: UIViewController {
     
     var questionNumber = 0
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        updateUI()
-    }
-
-    @IBAction func answerButtonPressed(_ sender: UIButton) {
-        
-        let userAnswer = sender.currentTitle
-        let actualAnswer = quiz[questionNumber].answer
-        
-        if userAnswer == actualAnswer{
-            sender.backgroundColor = .green
+    func checkAnswer(_ userAnswer: String){
+        if userAnswer == quiz[questionNumber].answer {
+            // user right
         } else {
-            sender.backgroundColor = .red
+            //user wrong
         }
-        if questionNumber < quiz.count - 1 {
-            questionNumber += 1
-        } else {
-            questionNumber = 0
-        }
-        
-        Timer.scheduledTimer(timeInterval: 0.2, target:self, selector: #selector(updateUI), userInfo:nil, repeats: false)
     }
-    
-    @objc func updateUI(){
-        questionLabel.text = quiz[questionNumber].text
-        trueButton.backgroundColor = .clear
-        falseButton.backgroundColor = .clear
-        progressBar.progress = Float(questionNumber + 1) / Float(quiz.count)
-    }
-    
 }
-
