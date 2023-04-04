@@ -24,8 +24,10 @@ class ViewController: UIViewController {
     }
 
     @IBAction func answerButtonPressed(_ sender: UIButton) {
+        guard let userAnswer = sender.currentTitle else {
+            return
+        }
         
-        let userAnswer = sender.currentTitle!
         let userGotItRight = quizBrain.checkAnswer(userAnswer)
         
         if userGotItRight {
@@ -36,16 +38,19 @@ class ViewController: UIViewController {
         
         quizBrain.nextQuestion()
         
-        Timer.scheduledTimer(timeInterval: 0.2, target:self, selector: #selector(updateUI), userInfo:nil, repeats: false)
+        Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { _ in
+            self.updateUI()
+        }
     }
     
     @objc func updateUI(){
-        questionLabel.text = quizBrain.getQuestionText()
-        progressBar.progress = quizBrain.getProgress()
-        scoreLabel.text = "Score: \(quizBrain.getScore())"
-        trueButton.backgroundColor = .clear
-        falseButton.backgroundColor = .clear
-        
+        DispatchQueue.main.async {
+            self.questionLabel.text = self.quizBrain.getQuestionText()
+            self.progressBar.progress = self.quizBrain.getProgress()
+            self.scoreLabel.text = "Score: \(self.quizBrain.getScore())"
+            self.trueButton.backgroundColor = .clear
+            self.falseButton.backgroundColor = .clear
+        }
     }
     
 }
